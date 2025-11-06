@@ -2,6 +2,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
+from fastapi import FastAPI
 
 
 client = OpenAI(
@@ -32,3 +33,9 @@ completion = client.chat.completions.create(
 )
 
 print(completion.choices[0].message.content)
+
+app = FastAPI()
+
+@app.get("/")
+async def read_root():
+    return {"message": "Hello World"}
