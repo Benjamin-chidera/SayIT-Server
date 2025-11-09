@@ -91,7 +91,3 @@ if (!res.ok) {
 - Ensure HF_TOKEN is set and valid.
 - If model responses are inconsistent, consider tightening prompts or post-processing checks.
 - Check server logs for model request/response debugging.
-
-## License
-
-Add a license file as needed.
