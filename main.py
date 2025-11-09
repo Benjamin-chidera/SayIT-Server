@@ -4,6 +4,8 @@ from openai import OpenAI
 from dotenv import load_dotenv
 load_dotenv()
 from fastapi import FastAPI, File, UploadFile, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+
 import re
 
 
@@ -13,6 +15,15 @@ app = FastAPI(
     description="Backend server for SAYIT application",
     version="1.0.0",
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # change to specific origins like ["https://yourdomain.com"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 client = OpenAI(
     base_url="https://router.huggingface.co/v1",
     api_key=os.getenv("HF_TOKEN"),
@@ -46,9 +57,16 @@ client = OpenAI(
 async def read_root():
     return {"message": "Welcome to SAYIT Server. "}
 
-@app.post("/uploadCanvasImg-to-text/", status_code=status.HTTP_201_CREATED)
+@app.post("/uploadCanvasImg-to-text", status_code=status.HTTP_201_CREATED)
 async def upload_canvas_image(file: UploadFile = File(...)):
     try:
+        
+        print(f"📩 Received file: {file.filename}")
+        print(f"📄 Content type: {file.content_type}")
+        print(f"📦 Size (bytes): {len(await file.read())}")
+        
+        await file.seek(0)
+
         # Read image bytes directly
         image_bytes = await file.read()
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
@@ -87,6 +105,7 @@ async def upload_canvas_image(file: UploadFile = File(...)):
             if re.search(r'\b(no text|no text detected|no text found|there is no text|nothing detected|no text content|could not detect)\b', text, re.I):
                 raise HTTPException(status_code=400, detail="No text detected")
 
+            print(f"📝 Extracted Text: {text}")
             return {"text": text}
         else:
             raise HTTPException(status_code=400, detail="No text detected")
