@@ -9,7 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import re
 
 
-
 app = FastAPI(
     title="SAYIT Server",
     description="Backend server for SAYIT application",
@@ -28,30 +27,6 @@ client = OpenAI(
     base_url="https://router.huggingface.co/v1",
     api_key=os.getenv("HF_TOKEN"),
 )
-
-# completion = client.chat.completions.create(
-#     model="Qwen/Qwen3-VL-8B-Instruct",
-#     messages=[
-#         {
-#             "role": "user",
-#             "content": [ 
-#                 {
-#                     "type": "text",
-#                     "text": "return only the text from this image."
-#                 },
-#                 {
-#                     "type": "image_url",
-#                     "image_url": {
-#                         "url": "https://swharden.com/csdv/skiasharp/text/measure.png"
-#                     }
-#                 }
-#             ]
-#         }
-#     ],
-#     )
-
-# print(completion.choices[0].message.content)
-
 
 @app.get("/")
 async def read_root():
@@ -114,3 +89,5 @@ async def upload_canvas_image(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
         
+        
+# fastapi dev main.py --host 0.0.0.0 --port 8000 --reload  
