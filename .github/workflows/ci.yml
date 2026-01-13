@@ -29,6 +29,14 @@ jobs:
           uv pip install --system -r requirements.txt
           uv pip install --system pytest
 
+    # Docker Buildx setup
+      - name: Build Docker image
+        run: docker build -t sayit-server .
+
+    # Run Docker container
+      - name: Run Docker container
+        run: docker run -d -p 8000:8000 sayit-server
+
       - name: Run tests
         run: |
           pytest tests/ || echo "Tests failed or not found, continuing..."
@@ -40,3 +48,25 @@ jobs:
         run: |
           echo "Building the application..."
           # Add your build commands here
+
+  docker-build:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          tags: sayit-server:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          secrets: |
+            HF_TOKEN=${{ secrets.HF_TOKEN }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
