@@ -4,10 +4,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'sayit-server-lingering-pond-9016'
-primary_region = 'lhr'
-app = 'app-morning-river-7339'
-primary_region = 'iad'
+app = "sayit-server"
 
 [build]
 
