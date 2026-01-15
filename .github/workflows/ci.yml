@@ -29,11 +29,11 @@ jobs:
           uv pip install --system -r requirements.txt
           uv pip install --system pytest
 
-    # Docker Buildx setup
+      # Docker Buildx setup
       - name: Build Docker image
         run: docker build -t sayit-server .
 
-    # Run Docker container
+      # Run Docker container
       - name: Run Docker container
         run: docker run -d -p 8000:8000 sayit-server
 
