@@ -28,7 +28,7 @@ client = OpenAI(
     api_key=os.getenv("HF_TOKEN"),
 )
 
-@app.get("/")
+@app.get("/home")
 async def read_root():
     return {"message": "Welcome to SAYIT Server. "}
 
