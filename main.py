@@ -15,9 +15,16 @@ app = FastAPI(
     version="1.0.0",
 )
 
+origins = [
+    "http://localhost:3000",
+    "https://sayit-ten.vercel.app",
+    r"https:\/\/sayit-ten-.*\.vercel\.app"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "https://sayit-ten.vercel.app"],  # change to specific origins like ["https://yourdomain.com"]
+    allow_origins=origins,
+    allow_origin_regex=origins[-1],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -90,4 +97,4 @@ async def upload_canvas_image(file: UploadFile = File(...)):
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
         
         
-# fastapi dev main.py --host 0.0.0.0 --port 8000 --reload  
+# fastapi dev main.py --host 0.0.0.0 --port 8000 --reload
