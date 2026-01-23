@@ -17,7 +17,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # change to specific origins like ["https://yourdomain.com"]
+    allow_origins=["http://localhost:3000", "https://sayit-ten.vercel.app"],  # change to specific origins like ["https://yourdomain.com"]
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
