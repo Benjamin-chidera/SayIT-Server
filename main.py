@@ -77,7 +77,7 @@ async def upload_canvas_image(file: UploadFile = File(...)):
             text = str(result).strip()
 
             # If model responds with a "no text" style message, return an error
-            if re.search(r'\b(no text|no text detected|no text found|there is no text|nothing detected|no text content|could not detect)\b', text, re.I):
+            if re.search(r'\b(no text|no text detected|no text found|there is no text| There is no discernible text content in the image. It consists of abstract, scribbled lines. | nothing detected|no text content|could not detect)\b', text, re.I):
                 raise HTTPException(status_code=400, detail="No text detected")
 
             print(f"📝 Extracted Text: {text}")
